@@ -1,0 +1,258 @@
+<link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/common-pixel" rel="stylesheet">
+<style>
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #888; 
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+    }  
+    body{
+        overflow: hidden;
+        background-color: #85bcf4;
+        font-family: 'Public Pixel';
+    }
+    .maincontainer{
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+        grid-template-rows: 2fr 1fr;
+        width: 70vw;
+        height: 98vh;
+        margin: auto;
+    }
+    .mainshop{
+        grid-row: 1 /span 2;
+        overflow-y: scroll;
+    }
+    .shopkeeper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(background/shopbg.png);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
+    .backbutton{
+        border: none;
+        height: 6vh;
+        width: 6vw;
+        font-family: 'Public Pixel';
+        background-image: url("buttons/menu button.png");
+        background-color: #85bcf4;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+    .itemdescription{
+        position: relative;
+        margin: auto;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    .navigationbutton{
+        border: none;
+        height: 14vh;
+        width: 20vw;
+        font-family: 'Public Pixel';
+        background-image: url("buttons/menu button.png");
+        background-color: #85bcf4;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+    ul{
+        list-style: none;
+        padding: 0;
+    }
+    li{
+        margin: 20px;
+        text-align: center;
+    }
+    .maincontainer button{
+        width: 30vw;
+        height: 10vh;
+    }
+    .purchasebutton{
+        margin-top: 5vh;
+    }
+    .showinventory{
+        grid-row: 3 /span 6;
+    }
+    .moneycounter{
+        position: absolute;
+        display: inline-block;
+        font-size: 200px;
+        font-family: 'Common Pixel', sans-serif;
+        color: rgb(204, 165, 9);
+        bottom: 0;
+        left: 0;
+    }
+    .coin{
+        bottom:1vh;
+        height: 5vh;
+        width: 3vw;
+    }
+    .pedestal{
+        width: 10vw;
+    }
+</style>
+<html>
+    <body>
+        <button class="backbutton" onclick="leave()" style="position: absolute;">Back</button>
+        <div class="maincontainer">
+            <div id="mainshop" class="mainshop">
+                <ul>
+                    <li><button class="navigationbutton" onclick="itemdescription('Tomato',10)">Tomato</button></li>
+                    <li><button class="navigationbutton" onclick="itemdescription('Carrot',10)">Carrot</button></li>
+                    <li><button class="navigationbutton" onclick="itemdescription('Magical Tomato',500)">Magical Tomato</button></li>
+                    <li><button class="navigationbutton" onclick="itemdescription('Medicinal Tomato',500)">Medicinal Tomato</button></li>
+                    <li><button class="navigationbutton" onclick="itemdescription('Apple',10)">Apple</button></li>
+                    <li><button class="navigationbutton" onclick="itemdescription('Banana',10)">Banana</button></li>
+                    <li><button class="navigationbutton" onclick="itemdescription('Kiwi',10)">Kiwi</button></li>
+                    <li><button class="navigationbutton" onclick="itemdescription('Lettuce',10)">Lettuce</button></li>
+                    <li><button class="navigationbutton" onclick="itemdescription('Salad Dressing',25)">Salad Dressing</button></li>
+                    <li><button class="navigationbutton" onclick="itemdescription('Bread',25)">Bread</button></li>
+                    
+                </ul>
+            </div>
+            <div id="shopkeeper" class="shopkeeper">
+                <img class="pedestal" id="pedestal">
+            </div>
+            <div id="itemdescription" class="itemdescription">
+                
+            </div>
+        </div>
+        <div id="moneycounter" class="moneycounter" >
+            <table>
+                <th><img class = "coin" img src="other/coin.png"></th>
+                <th><p id="moneycount">:</p></th>
+            </table>
+             
+        </div>
+
+    </body>
+
+    <script>
+        const inventoryString = localStorage.getItem('inventory');
+        const currency1 = localStorage.getItem('currency');
+       
+        if (inventoryString) {
+        inventory = JSON.parse(inventoryString);
+        } else {
+        inventory = []; // Set to an empty array if no inventory data found
+        }
+
+        if (currency1) {
+            updateCounter()
+            currency = parseInt(currency1)
+        } else{
+            updateCounter()
+            currency = 0;
+        }
+
+        function updateCounter(){
+            money = localStorage.getItem("currency")
+            text = document.getElementById("moneycount")
+            text.style.fontSize = "4vh"; // Set the font size to 24 pixels (adjust as needed)
+            text.innerHTML = ":" + money
+        }
+        function itemdescription(item,cost){
+            playAudio('menu-select')
+            TextBox = document.getElementById("itemdescription")
+            TextBox.style.display = 'grid'
+            TextBox.style.gridTemplateRow = '1fr 1fr'
+            TextBox.innerHTML = item + "<br>"+ cost + " coins" + "<br>"
+            purchasebutton = document.createElement("button")
+            purchasebuttontext = document.createTextNode("Purchase Item")
+            purchasebutton.setAttribute("style","margin-top: 2vh;")
+            purchasebutton.appendChild(purchasebuttontext)
+            TextBox.appendChild(purchasebutton)
+            purchasebutton.setAttribute("onclick", 'purchase("'+item+'", '+cost+')');
+            purchasebutton.setAttribute("class", "navigationbutton")
+            image = document.getElementById("pedestal")
+            image.src = 'items/'+ item.toLowerCase() + '.png'
+        }
+
+        function purchase(item,cost){
+            if (currency >= cost){
+                currency -= cost;
+                playAudio('buy')
+                additem(item, 1) 
+                save()
+                updateCounter()
+            }
+            else{
+                playAudio('broke')
+                return false;
+            }
+        }
+
+        function leave() {
+            save()
+            setTimeout(() => {
+                location.href = '../index.html';
+            }, 300);
+            playAudio('menu-select')
+        }
+
+        function additem(itemId, amount) {
+            const quantity = amount
+            const newArrayItems = Array(quantity).fill(itemId);
+            inventory = inventory.concat(newArrayItems);
+        }
+
+        function save() {
+            const inventoryString = JSON.stringify(inventory);
+            localStorage.setItem('inventory', inventoryString);
+            const currency1 = JSON.stringify(currency);
+            localStorage.setItem('currency', currency1);
+        }
+        const audioElements = new Map();
+        audioElements.set('menu-select', new Audio('audio/menu-select.mp3'));
+        audioElements.set('bgm', new Audio('audio/menu-music.mp3'));
+        audioElements.set('buy', new Audio('audio/coins.wav'));
+        audioElements.set('broke', new Audio('audio/broke.wav'));
+
+
+    
+      function playAudio(id, delay){
+      const audio = audioElements.get(id);
+      if (delay == undefined){
+          delay = 0
+      }
+      if (id == 'bgm'){
+          audio.loop = true;
+          audio.volume = 0.2;
+          audio.play()
+          return;
+      }
+      audio.currentTime = 0;  // Reset the audio to the beginning
+      setTimeout(() => {
+          audio.play();
+      }, delay);
+      }
+
+  function toggleAudio() {
+  const audio = audioElements.get('bgm');
+  const volumeButton = document.getElementById('volume-button');
+  
+  if (audio.paused) {
+    audio.volume = 0.5;
+    audio.loop = true;
+    audio.play();
+    volumeButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+  } else {
+    audio.pause();
+    volumeButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
+  }
+}
+
+    </script>
+</html>

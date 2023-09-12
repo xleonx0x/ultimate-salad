@@ -1,0 +1,1338 @@
+<html>
+    <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/pic0" rel="stylesheet">
+    <style>
+        .maincontainer{
+            margin: auto;
+            padding: 2vh;
+            width: 52.5vw;
+            background-color: #85bcf4;
+            height: 93vh;
+        }
+        .mainscreen{
+            width: 50vw;
+            height: 90vh;
+            display: grid;
+            grid-template-rows: 3fr 1fr;
+            grid-template-columns: 1fr 3fr;
+            gap: 1vh;
+        }
+        #specificbutton button {
+        margin-bottom: 0;
+        }
+
+        .fightscreen{
+            position: relative;
+            grid-column: 1 /span 2;
+            background-size: cover;
+            background-size: 50vw 70vh;
+            background-repeat: no-repeat;
+            height: 70vh;
+            width: 50vw;
+                
+        }
+        .menu{
+            display: grid;
+            grid-template-rows: 1fr 1fr 1fr 1fr;
+        }
+        #menu button {
+        font-family: 'Public Pixel';
+        }
+        
+
+        .specifybutton{
+            display: grid;
+        }
+
+        .buttonstyle {
+        color: #4c4a4a;
+        font-family: 'Public Pixel';
+        }
+        #buttonstyle button:disabled {
+        text-decoration: line-through;
+        }
+
+        .fightscreen img{
+            position: absolute;
+            bottom: 1rem;
+        }
+        .boss{
+            right: 4rem;
+        }
+        .bossposition{
+            bottom: 6rem;
+            right: 5rem;
+        }
+        .characterposition{
+            bottom: 0rem;
+            left: 1rem;
+        }
+
+        .healthpoints {
+        position: relative;
+        width: 20vw;
+        height: 4vh;
+        top: 0rem;
+        left: 0rem;
+        }
+
+        #healthbar1 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgb(0, 162, 0);
+        transition: width 0.5s ease;
+        color:white;
+        text-align: center;
+        border-radius: 10px;
+        font-family: 'Public Pixel';
+        }
+        
+        .bosshealthpoints {
+        position: absolute;
+        width: 20vw;
+        height: 4vh;
+        top: 0rem;
+        right: 0rem;
+        }
+
+        #healthbar2 {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: rgb(200, 33, 0);
+        transition: width 0.5s ease;
+        color:white;
+        text-align: center;
+        border-radius: 10px;
+        font-family: 'Public Pixel';
+        }
+
+        #manabar1 {
+        position: relative;
+        top: 0;
+        right: 0;
+        background-color: rgb(37, 107, 172);
+        transition: width 0.5s ease;
+        color:white;
+        text-align: center;
+        border-radius: 10px;
+        font-family: 'Public Pixel';
+        }
+
+        .manapoints {
+        position: relative;
+        width: 20vw;
+        height: 4vh;
+        top: 0rem;
+        left: 0rem;
+        }
+
+        .damage-number {
+        position: absolute;
+        font-size: 24px;
+        font-weight: bold;
+        font-family: 'Public Pixel';
+        }
+
+        .damage-number.animate-fade-out {
+        opacity: 0;
+        transform: translateY(-100%);
+        transition: opacity 0.3s ease-out, transform 0.5s ease-out;
+        }
+
+        .damage-number.critical {
+            color: rgb(255, 157, 0);
+        }
+
+        .damage-number.player {
+            color: red;
+            }
+        .damage-number.enemy {
+            color: red;
+        }
+        .damage-number.healing {
+            color: rgb(0, 255, 8);
+        }
+        .damage-number.freeze {
+            color: rgb(0, 131, 253);
+        }
+        .damage-number.manaregen{
+        color:rgb(37, 107, 172)
+        }
+        .damage-number.stun{
+        color:rgb(61, 151, 26)
+        }
+        .navigationbutton{
+        border: none;
+        height: 14vh;
+        width: 20vw;
+        font-family: 'Public Pixel';
+        background-image: url("buttons/menu button.png");
+        background-color: #85bcf4;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+        /* Tooltip container */
+        .tippy-box[data-theme~='attacks'] {
+        background-color: #000000;
+        color: #ffffff;
+        font-size: 1.5vh;
+        padding: 0;
+        border-radius: 0;
+        font-family: 'Public Pixel';
+        text-align: center;
+        }
+
+    </style>
+    <body>
+        <div class="maincontainer">
+            <div class="mainscreen" id="mainscreen">
+                <div class="fightscreen" id="fightscreen">
+                    <div class="healthpoints">
+                        <div id="healthbar1" style="width:100%">100</div>
+                    </div>
+                    <div class="manapoints">
+                        <div id="manabar1" style="width:100%">100</div>
+                    </div>
+                    <div class="bosshealthpoints">
+                        <div id="healthbar2"style="width:100%">100</div>
+                    </div>
+
+                    <div class="charactersprites">
+                        <img class="maincharacter" id="maincharacter" src="characters/chef_character.png">
+                        <img class="boss" id="boss1" src="characters/carrot_sleep.png" width="300vw" height="300vh">
+                    </div>
+                </div>
+                <div id ="menu" class="menu">
+                    <button onclick="attackoptions()">Attack</button>
+                    <button onclick="healingoptions()">Food</button>
+                    <button onclick="spelloptions()">Spells</button>
+                    <button onclick="retreatoptions()">Retreat</button>
+                </div>
+                <div class="specifybutton" id="specificbutton"></div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+        <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+
+    <script>
+
+        // Chef Stats
+        const storedMaxCharacterHealth = localStorage.getItem('maxCharacterHealth');
+        const storedMaxMana = localStorage.getItem('maxMana');
+        const storedManaregen = localStorage.getItem('manaregen')
+        if (storedMaxCharacterHealth) {
+        maxcharacterhealth = parseInt(storedMaxCharacterHealth);
+    } else{
+        maxcharacterhealth = 100;
+    }
+
+    if (storedMaxMana) {
+        maxmana = parseInt(storedMaxMana);
+    } else{
+        maxmana = 100;
+    }
+    if (storedManaregen) {
+        manaregen = parseInt(storedManaregen);
+    } else{
+        manaregen = 5;
+    }
+    var maxbosshealth;
+    var currentbosshealth;
+    var currentcharacterhealth = maxcharacterhealth;
+    var currentmana = maxmana;
+    var manaregen;
+    var lastmove = ' ';
+    var stun = 0;
+    var playerstun =0;
+    var turn = 1;
+    var criticaldamage = 1.5;
+    var criticalchance = 0
+    var cooldown = []; //button1, 2, 3, 4, 5...
+    var pressed = false;
+    var block = false;
+    var stunned = false;
+    var foodstun = 0;
+    let vineCounter = 0;
+
+        // Inventory and Currency
+        const inventoryString = localStorage.getItem('inventory');
+        const currency1 = localStorage.getItem('currency');
+        if (inventoryString) {
+        inventory = JSON.parse(inventoryString);
+        } else {
+        inventory = []; // Set to an empty array if no inventory data found
+        }
+        if (currency1) {
+            currency = parseInt(currency1)
+        } else{
+            currency = 0;
+        }
+        
+        /// Audio Files
+
+        const audioElements = new Map();
+        audioElements.set('basicslash', new Audio('audio/basicslash.mp3'));
+        audioElements.set('strongslash', new Audio('audio/strongslash.mp3'));
+        audioElements.set('block', new Audio('audio/block.mp3'));
+        audioElements.set('chefhit', new Audio('audio/chef hit.wav'));
+        audioElements.set('bosshit', new Audio('audio/boss hit.wav'));
+        audioElements.set('coins', new Audio('audio/coins.wav'));
+        audioElements.set('eating', new Audio('audio/eating.mp3'));
+        audioElements.set('freeze', new Audio('audio/freeze.flac'));
+        audioElements.set('spatulaslap', new Audio('audio/spatulaslap.mp3'));
+        audioElements.set('winningsound', new Audio('audio/winning sound.wav'));
+        audioElements.set('diceroll', new Audio('audio/diceroll.wav'));
+        audioElements.set('gameover', new Audio('audio/gameover.mp3'));
+        audioElements.set('healing', new Audio('audio/healing.wav'));
+        audioElements.set('bgm', new Audio('audio/bossmusic.mp3'));
+        audioElements.get('bgm').volume = 0.5; // Set the volume to 50%
+        audioElements.set('menu-select', new Audio('audio/menu-select.mp3'));
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////   Attack Menu
+
+        function setDifficulty(maxHealth) {
+        maxbosshealth = maxHealth;
+        currentbosshealth = maxbosshealth;
+        currentmana = maxmana;
+        currentcharacterhealth = maxcharacterhealth;
+        let bosshealthbar = document.getElementById("healthbar2");
+        bosshealthbar.innerHTML = currentbosshealth +'/' + maxbosshealth;
+        let characterhealthbar = document.getElementById("healthbar1")
+        characterhealthbar.innerHTML = currentcharacterhealth + '/' + maxcharacterhealth;
+        let manabar = document.getElementById("manabar1")
+        manabar.innerHTML = currentmana + '/' + maxmana;
+        }
+
+        function choosedifficulty() {
+        const difficulty = prompt("Select by inputting a number.\n1. Easy\n2. Normal\n3. Hard")
+  
+        if (difficulty === '1') {
+            setDifficulty(100)
+        } 
+        else if (difficulty === '2') {
+            setDifficulty(150)
+        } 
+        else if (difficulty === '3') {
+            setDifficulty(200)
+        }
+        else {
+            alert('Invalid Input. Please select a valid option')
+            choosedifficulty();
+        }
+     }
+
+        function playAudio(id, delay){
+        const audio = audioElements.get(id);
+        if (delay == undefined){
+            delay = 0
+        }
+        if (id == 'bgm'){
+            audio.loop = true;
+            audio.volume = 0.2;
+            audio.play()
+            return;
+        }
+        audio.currentTime = 0;  // Reset the audio to the beginning
+        setTimeout(() => {
+            audio.play();
+        }, delay);
+        }
+
+        function clear(){
+            document.getElementById('specificbutton').remove()
+            let divider = document.createElement('div');
+            document.getElementById('mainscreen').appendChild(divider);
+            divider.setAttribute('class','specifybutton');
+            divider.setAttribute('id','specificbutton');
+        }
+        
+        function removebuttons(){
+            const buttonContainer = document.getElementById("menu");
+            buttonContainer.innerHTML = "";
+            clear()
+            bossdamage()
+        }
+
+        function retreat(){
+            if (currentcharacterhealth > 0.5 * maxcharacterhealth){
+                if (Math.random() < 0.5) {
+                alert("You managed to retreat successfully");
+                leave()
+            }else{
+                alert("You failed to retreat!");
+            }
+            return;
+            }
+
+            if (currentcharacterhealth < 0.5 * maxcharacterhealth){
+                if (Math.random() < 0.2) {
+                alert("You managed to retreat successfully");
+                leave()
+            }else{
+                alert("You failed to retreat!");
+            }
+            return;
+             }
+    }
+
+
+
+        function save() {
+        const inventoryString = JSON.stringify(inventory);
+        localStorage.setItem('inventory', inventoryString);
+        const currency1 = JSON.stringify(currency);
+        localStorage.setItem('currency', currency1);
+        localStorage.setItem('maxCharacterHealth', maxcharacterhealth);
+        localStorage.setItem('maxMana', maxmana);
+        localStorage.setItem('manaregen', manaregen)
+        }
+
+        function cooldownKENNETH(buttonid, cd){ // creates a new array element for every buttonid number and sets a cooldown for that element
+            const index = Number(buttonid.slice(6)) - 1;
+            if (index >= cooldown.length) {
+            const diff = index - cooldown.length + 1;
+            cooldown = cooldown.concat(Array(diff).fill(0));
+            }
+            if (cd === 0) {
+                cooldown[index] += 1;
+            } else if (!isNaN(cd)) {
+                cooldown[index] += (cd + 1);
+            }
+            removebuttons()
+        }
+
+     choosedifficulty();
+            function cooldownCHECK(...idnumber) { // checks for every button's cooldown that is put in the function.
+            let buttonid = "button";
+            for (let i = 0; i < idnumber.length; i++) {
+                const index = idnumber[i] - 1;
+                if (cooldown[index] > 0) { // if cooldown > 0 it sets disabled attribute to the button.
+                buttonid += idnumber[i];
+                const buttonContainer = document.getElementById(buttonid);
+                buttonContainer.setAttribute("disabled", "");
+                buttonid = "button"; 
+                } else { // if cooldown = 0 it remves the disabled attribute
+                const buttonContainer = document.getElementById(buttonid + idnumber[i]);
+                buttonContainer.removeAttribute("disabled");
+                }
+            }
+        }
+
+        function addcurrency(low, high) {
+            amount = high !== undefined ? Math.floor(Math.random() * (high - low + 1)) + low: low;
+            currency += amount;
+        }
+
+        function removecurrency(amount){
+            if (currency >= amount){
+                currency -= amount;
+            }
+            else{
+                currency = 0;
+            }
+        }
+
+        function additem(itemId, amount) {
+        const quantity = amount
+        const newArrayItems = Array(quantity).fill(itemId);
+        inventory = inventory.concat(newArrayItems);
+        }
+
+        function bossdrop(itemId, dropchance, low, high) {
+        const random = Math.random();
+        if (maxbosshealth === '200'){
+            dropchance *= 2;
+            if (dropchance > 1){
+                dropchance = 1;
+            }
+        }
+        if (random < dropchance) {
+        const quantity = high !== undefined ? Math.floor(Math.random() * (high - low + 1)) + low : low;
+        const drop = { item: itemId, quantity: quantity };
+        bossdrops.push(drop);
+        additem(itemId, quantity);
+        }
+        }
+
+        function removeitem(itemId, quantity) {
+        let count = 0;
+        for (let i = inventory.length - 1; i >= 0 && count < quantity; i--) {
+            if (inventory[i] === itemId) {
+            count++;
+            inventory.splice(i, 1);
+            }
+        }
+        }
+
+        function cooldownOVER(){ // remove one from each element in the array and if it is 0 skips it
+            for (let i = 0; i < cooldown.length; i++) {
+            if (cooldown[i] === 0) {
+            continue;
+            }
+            cooldown[i] -= 1;
+            }
+    }
+
+    function leave(){
+            save()
+            location.href = '../index.html';
+        }
+
+        function showdamage(damage, onboss, origin) {
+            const damageNumber = document.createElement('div');
+            damageNumber.classList.add('damage-number');
+            if (onboss) {
+                if (currentbosshealth <= 0){
+                return;
+            }
+            if (origin === freeze){
+                damageNumber.classList.add('freeze');
+                damageNumber.textContent = 'FROZEN';
+            }
+            if (origin === damagecalculation){
+                if (calculatecriticalchance()) {
+                damageNumber.classList.add('critical');
+                damageNumber.textContent = '-'+damage + '!';
+                document.getElementById('fightscreen').appendChild(damageNumber);
+                }
+            else{
+                damageNumber.classList.add('player');
+                damageNumber.textContent = '-'+damage;
+                document.getElementById('fightscreen').appendChild(damageNumber);
+            }
+            }
+            // Set at boss position
+            damageNumber.style.right = '4rem';
+            damageNumber.style.top = '40vh';
+        }
+        if (!onboss){
+            if (currentcharacterhealth <= 0){
+                return;
+            }
+            if (origin === healingcalculation){
+                damageNumber.classList.add('healing');
+                damageNumber.textContent = '+'+damage;
+            }
+            if (origin === manaregenerate){
+                damageNumber.classList.add('manaregen');
+                damageNumber.textContent = '+'+damage;
+            }
+            if (origin === manacalculation){
+                damageNumber.classList.add('manaregen');
+                damageNumber.textContent = damage;
+            }
+            if (origin === bossdamage){
+                damageNumber.classList.add('enemy');
+                damageNumber.textContent = '-'+damage;
+            }
+            if (origin === playerturn){
+                damageNumber.classList.add('stun')
+                damageNumber.textContent = 'Stunned!';
+            }
+            /*
+            if (calculatecriticalchanceBoss()) {
+                damageNumber.classList.add('critical');
+                }*/
+                // Set at player position
+                damageNumber.style.left = '10rem';
+                damageNumber.style.top = '50vh';
+            }
+        document.getElementById('fightscreen').appendChild(damageNumber);
+        
+        setTimeout(() => {
+            damageNumber.classList.add('animate-fade-out');
+            setTimeout(() => {
+            damageNumber.remove();
+            }, 1000);
+        }, 500);
+        }
+
+        function setcriticalchance(chance){
+            criticalchance = chance;
+        }
+
+        function calculatecriticalchance(){ // calculates chance and returns a boolean
+            const randomnum = (Math.random() * 100);
+            return randomnum <= criticalchance;
+
+        }
+
+        function checkcharacterdeath(){
+            if (currentcharacterhealth <= 0) {
+                currentcharacterhealth = 0;
+                const deathElement = document.getElementById("maincharacter"); // select the boss element
+                deathElement.remove()
+                let healthbar = document.getElementById("healthbar1");
+                let manabarcalc = document.getElementById("manabar1");
+                healthbar.style.display = 'none'; // Removes healthbar upon death
+                manabarcalc.style.display = 'none'; // remove manabar upon death
+                const buttonContainer = document.getElementById("menu");
+                buttonContainer.innerHTML = "";
+                clear();
+                music = audioElements.get('bgm');
+                music.pause();
+                playAudio("gameover");
+                setTimeout(() => {
+                    losingloot();
+                    leave()
+                }, 100);
+                return true;
+            }
+        }
+
+        function losingloot(){
+            const initialInventoryLength = inventory.length;
+            const itemsToRemove = Math.floor(initialInventoryLength / 4);
+            const removedItems = [];
+
+            for (let i = 0; i < itemsToRemove; i++) {
+                const randomIndex = Math.floor(Math.random() * inventory.length);
+                const removedItem = inventory.splice(randomIndex, 1)[0]; // Remove the item and get its value
+                removedItems.push(removedItem);
+            }
+
+            let message = "You died! You lost a quarter of your inventory.\n";
+            message += "Remaining items:\n";
+            const remainingItems = {};
+            inventory.forEach(item => {
+                remainingItems[item] = (remainingItems[item] || 0) + 1;
+            });
+            Object.entries(remainingItems).forEach(([item, count]) => {
+                message += `${item} x ${count}\n`;
+            });
+
+            message += "\nLost items:\n";
+            const lostItems = {};
+            removedItems.forEach(item => {
+                lostItems[item] = (lostItems[item] || 0) + 1;
+            });
+            Object.entries(lostItems).forEach(([item, count]) => {
+                message += `${item} x ${count}\n`;
+            });
+            alert(message);
+
+            removedItems.forEach(item => {
+            inventory.push(item);
+        });
+
+        inventory.length = initialInventoryLength - itemsToRemove; // Adjust the inventory length   
+        removedItems.length = 0; // Clear the lostItems array
+        }
+        bossdrops = [];
+
+        function checkbossdeath() {
+        if (currentbosshealth <= 0) {
+            const bossElement = document.getElementById("boss1");
+            bossElement.src = 'characters/carrot_dead.png';
+            bossElement.setAttribute('width', '300vw');
+            bossElement.setAttribute('height', '300vh');
+            let bosshealthbar = document.getElementById("healthbar2");
+            bosshealthbar.style.display = 'none';
+
+            const bossRewards = {
+            100: {
+                items: [{ item: 'Tomato', quantity: 1 }],
+                currency: 20
+            },
+            150: {
+                items: [
+                { item: 'Tomato', quantity: 2 },
+                { item: 'Medicinal Seed', quantity: 1 },
+                { item: 'Magical Seed', quantity: 1 }
+                ],
+                currency: 40
+            },
+            200: {
+                items: [
+                { item: 'Tomato', quantity: 4 },
+                { item: 'Medicinal Seed', quantity: 2 },
+                { item: 'Magical Seed', quantity: 2 }
+                ],
+                currency: 60
+            }
+            };
+
+            music = audioElements.get('bgm');
+            music.pause();
+            playAudio('winningsound');
+            setTimeout(() => {
+            if (bossRewards.hasOwnProperty(maxbosshealth)) {
+            const rewards = bossRewards[maxbosshealth];
+            rewards.items.forEach(item => bossdrop(item.item, 1, item.quantity));
+            addcurrency(rewards.currency);
+
+            let message = `You have defeated the Carrot Boss!\nYou gained:\n`;
+            rewards.items.forEach(item => {
+                message += `${item.item} x ${item.quantity}\n`;
+            });
+            message += `Coins Gained: ${rewards.currency}`;
+            alert(message);
+            }
+            leave();
+            }, 200);
+        }
+        }
+        
+        function showbuttons(duration) {
+            setTimeout(function() {
+                const buttonContainer = document.getElementById("menu");
+                buttonContainer.innerHTML = `
+                <button onclick="attackoptions()">Attack</button>
+                <button onclick="healingoptions()">Food</button>
+                <button onclick="spelloptions()">Spells</button>
+                <button onclick="retreatoptions()">Retreat</button>
+                `;
+            }, duration);
+            }
+
+        function playerturn(){
+            if (currentcharacterhealth <= 0){
+                checkcharacterdeath()
+                return;
+            }
+            if (playerstun > 0){
+                setTimeout(() => {
+                showdamage(0, false, playerturn)
+                playerstun = Math.min(playerstun - 1, 0)
+                bossdamage()
+                return;
+                }, 1000);
+            }
+            if (playerstun == 0){
+                stunned = false;
+            }
+            showbuttons(0)
+            cooldownOVER()
+            block = false
+            setTimeout(() => {
+                manaregenerate(manaregen)
+            }, 500);
+            setTimeout(() => {
+                const chefElement = document.getElementById("maincharacter");
+            chefElement.src = 'characters/chef_character.png'
+            }, 1000);
+        }
+
+        function damagecalculation(low, high){
+            if (currentcharacterhealth <= 0){
+                return;
+            }
+            attackdamage = high !== undefined ? Math.floor(Math.random() * (high - low + 1)) + low: low;
+            if (calculatecriticalchance(criticalchance)) {
+                attackdamage = Math.floor((attackdamage * criticaldamage))
+                currentbosshealth -= attackdamage
+                showdamage(attackdamage, true)
+                criticalchance = 0
+            }
+            else {
+                currentbosshealth -= (attackdamage);
+                showdamage(attackdamage, true, damagecalculation)
+            }
+            update('boss')  
+            checkbossdeath()
+        }
+
+        function manaupdate(){
+            let manabarcalc = document.getElementById("manabar1");
+            let manapercentage = (currentmana / maxmana) * 100;
+            manabarcalc.style.width = manapercentage + '%';
+            manabarcalc.innerHTML = currentmana + '/' + maxmana;
+        }
+        
+        function manacalculation(manacost){
+            if (currentmana >= manacost) {
+            currentmana = currentmana - manacost;
+            manaupdate()
+            return true;
+            }
+            if (currentmana < manacost){
+                showdamage('Not Enough Mana!', false, manacalculation)
+                return false;
+            }
+        }
+
+        function manaregenerate(manaamount){
+            currentmana = Math.min(currentmana + manaamount, maxmana);
+            manaupdate()
+            if (currentcharacterhealth <= 0){
+                manabarcalc.style.display = 'none';
+                return;
+            }
+        }
+
+        block = false
+        function bossdamage() {
+            if (foodstun > 0){
+                foodstun -= 1;
+            }
+            if (stun > 0){
+                stun -= 1
+            setTimeout(() => {
+                showdamage(0, true, freeze)
+            }, 1000);
+                setTimeout(() => {
+                playerturn()
+                }, 2000);
+                return;
+            }
+
+            if (currentbosshealth < 0) {
+                showbuttons()
+            return;
+            }
+
+            const bossElement = document.getElementById("boss1"); // select the boss element
+               bossElement.src = 'characters/carrot_boss.png' // set the src attribute to the URL of the new image
+            
+            const attacks = [
+                { bossattackdamage: { low: 10, high: 15 }, animation: 'carrot stab.gif', duration: 550 },
+                { bossattackdamage: { low: 20, high: 25 }, animation: 'leafblade1.gif', duration: 600 },
+                { bossattackdamage: { low: 25, high: 30 }, animation: 'carrot stab.gif', duration: 550 },
+                { bossattackdamage: { low: 5, high: 19 }, animation: 'vine.png', duration: 1}
+            ];
+            
+            
+            randomAttackIndex = Math.floor(Math.random() * attacks.length);
+            randomAttack = attacks[randomAttackIndex];
+            damageRange = randomAttack.bossattackdamage;
+            let lastMove = '';
+
+        if (attacks.length > 1) {
+            while (randomAttack.animation === lastMove) {
+            randomAttackIndex = Math.floor(Math.random() * attacks.length);
+            randomAttack = attacks[randomAttackIndex];
+            }
+        }
+            if (randomAttack.animation == lastmove){
+                while (randomAttack.animation === lastmove || randomAttack.animation === 'vine.png') {
+                    randomAttackIndex = Math.floor(Math.random() * attacks.length);
+                    randomAttack = attacks[randomAttackIndex];
+                    damageRange = randomAttack.bossattackdamage;
+                } 
+            }
+
+            console.log('currentmove: ' + randomAttack.animation + '\nlastmove: ' + lastmove)
+
+
+            if (randomAttackIndex === 3){
+                if (vineCounter < 4) {
+                bossdamage(); // Call bossdamage() again if vine is selected before 4 turns have passed
+                return;
+                }
+                bossattack = document.createElement('img');
+                bossattack.src = "Animations/vine.png"; 
+                document.getElementById("fightscreen").appendChild(bossattack);
+                bossattack.setAttribute('id', 'vinewhip');
+                bossattack.setAttribute('position', 'absolute');
+                bossattack.setAttribute('left', '-10vw');
+                bossattack.setAttribute('bottom', '0vh');
+                bossattack.setAttribute('width', '256vw');
+                bossattack.setAttribute('height', '256vh');
+                foodstun += 3;
+                lastlastmmove = lastmove;
+                lastmove = randomAttack.animation;
+                vineCounter = 0; // Reset the vine counter to 0
+                playerturn();
+                return;
+            }
+            
+            const damage = block ? Math.floor(((Math.random() * (damageRange.high - damageRange.low + 1)) + damageRange.low) / 2): Math.floor(Math.random() * (damageRange.high - damageRange.low + 1)) + damageRange.low;
+            setTimeout(function() {
+            currentcharacterhealth -= damage;
+            bossattack = document.createElement('img');
+            bossattack.src = "Animations/" + randomAttack.animation; 
+            document.getElementById("fightscreen").appendChild(bossattack);
+            bossattack.setAttribute('id', 'currentbossattack');
+            bossattack.setAttribute('class', 'characterposition');
+            bossattack.setAttribute('width', '256vw');
+            bossattack.setAttribute('height', '400vh');
+            setTimeout(function(){document.getElementById("currentbossattack").remove()}, randomAttack.duration);
+            update('chef')
+            showdamage(damage, false, bossdamage)
+            playerturn()
+            if (randomAttackIndex === 0 || randomAttackIndex === 2){
+                playAudio("bosshit", 400)
+            } else{
+                playAudio("bosshit", 150)
+            }
+            }, randomAttack.duration);
+            lastlastmmove = lastmove;
+            lastmove = randomAttack.animation;
+            if (foodstun === 0) {
+            setTimeout(() => {
+                const vinewhipElement = document.getElementById("vinewhip");
+                if (vinewhipElement) {
+                vinewhipElement.remove();
+                }
+            }, 1300);
+            }
+            playAudio("bgm")
+            vineCounter++;
+        }
+
+        function update(character){
+            if (character === 'boss'){
+            let bossHealthPercentage = (currentbosshealth / maxbosshealth) * 100;
+            let bosshealthbar = document.getElementById("healthbar2");
+            bosshealthbar.style.width = bossHealthPercentage + '%';
+            bosshealthbar.innerHTML = currentbosshealth +'/' + maxbosshealth;
+            }
+            if (character === 'chef'){
+            let characterHealthPercentage = (currentcharacterhealth / maxcharacterhealth) * 100;
+            let healthbar = document.getElementById("healthbar1");
+            healthbar.style.width = characterHealthPercentage + '%';
+            healthbar.innerHTML = currentcharacterhealth + '/' + maxcharacterhealth;
+            let manabarcalc = document.getElementById("manabar1");
+            let manapercentage = (currentmana / maxmana) * 100;
+            manabarcalc.style.width = manapercentage + '%';
+            manabarcalc.innerHTML = currentmana + '/' + maxmana;
+            }
+        }
+        
+        function startBlock() {
+            block = true
+            const blockElement = document.getElementById("maincharacter");
+            blockElement.src = 'characters/chef_block.png'
+        }
+
+        function animationchoice(attack){
+            if (currentcharacterhealth <= 0){
+                return;
+            }
+
+            if(attack == "spatulaslap"){
+                attack1 = document.createElement('img');
+                attack1.src = "Animations/spatulaslap.gif"; 
+                document.getElementById("fightscreen").appendChild(attack1);
+                attack1.setAttribute('id', 'currentcharacterattack');
+                attack1.setAttribute('class', 'bossposition');
+                attack1.setAttribute('width', '256vw');
+                attack1.setAttribute('height', '400vh');
+                setTimeout(function(){document.getElementById("currentcharacterattack").remove()}, 680);
+                setcriticalchance(10)
+                damagecalculation(20, 24)
+            }
+            if(attack == "strongslash"){
+                attack2 = document.createElement('img');
+                attack2.src = "Animations/slash1.gif"; 
+                document.getElementById("fightscreen").appendChild(attack2);
+                attack2.setAttribute('id', 'currentcharacterattack');
+                attack2.setAttribute('class', 'bossposition');
+                attack2.setAttribute('width', '256vw');
+                attack2.setAttribute('height', '500vh');
+                attack2.setAttribute('bottom', '4rem')
+                attack2.setAttribute('right', '2rem')
+                setTimeout(function(){document.getElementById("currentcharacterattack").remove()}, 680);
+                setcriticalchance(10)
+                damagecalculation(13, 18)
+            }
+        }
+
+        function attackoptions(){
+                clear()
+                playAudio('menu-select')
+                let button = document.createElement('button');
+                let buttonvalue = document.createTextNode('Spatula Slap');
+                button.appendChild(buttonvalue);
+                document.getElementById('specificbutton').appendChild(button);
+                button.setAttribute('class','buttonstyle');
+                button.setAttribute('id','button1');
+                button.setAttribute('onclick', 'animationchoice("spatulaslap"); cooldownKENNETH("button1", 3); playAudio("menu-select"); playAudio("chefhit", 150);');
+                tippy(button, {
+                content: 'Perform a powerful spatula slap dealing 20 - 24 damage. Cooldown 3 turns.', // Tooltip content
+                placement: 'right',
+                theme: "attacks",
+                delay: 500
+                });
+
+                let button1 = document.createElement('button');
+                let buttonvalue1 = document.createTextNode('Strong Slash');
+                button1.appendChild(buttonvalue1);
+                document.getElementById('specificbutton').appendChild(button1);
+                button1.setAttribute('class','buttonstyle');
+                button1.setAttribute('id','button2');
+                button1.setAttribute('onclick','animationchoice("strongslash"); cooldownKENNETH("button2", 2);playAudio("menu-select"); playAudio("chefhit", 150)');
+                tippy(button1, {
+                content: 'Perform a strong slash dealing 13 - 18 damage. Cooldown: 2 turns.', // Tooltip content
+                placement: 'right',
+                theme: "attacks",
+                delay: 500
+                });
+
+                let button3 = document.createElement('button');
+                let buttonvalue3 = document.createTextNode('Basic Slash');
+                button3.appendChild(buttonvalue3);
+                document.getElementById('specificbutton').appendChild(button3);
+                button3.setAttribute('class','buttonstyle');
+                button3.setAttribute('id','button3');
+                button3.setAttribute('onclick','damagecalculation(8, 10); cooldownKENNETH("button3", 0);playAudio("menu-select"); playAudio("chefhit", 150)');
+                tippy(button3, {
+                content: 'Perform a basic slash  dealing 8 - 10 damage. Cooldown: 0 turns.', // Tooltip content
+                placement: 'right',
+                theme: "attacks",
+                delay: 500
+                });
+            
+
+                let button4 = document.createElement('button');
+                let buttonvalue4 = document.createTextNode('Block');
+                button4.appendChild(buttonvalue4);
+                document.getElementById('specificbutton').appendChild(button4);
+                button4.setAttribute('class','buttonstyle');
+                button4.setAttribute('id','button4');
+                button4.setAttribute('onclick','startBlock(); cooldownKENNETH("button4", 1);playAudio("menu-select"); playAudio("block", 150)');
+                tippy(button4, {
+                content: 'Block 50% of the next attack.', // Tooltip content
+                placement: 'right',
+                theme: "attacks",
+                delay: 500
+                });
+                pressed = true
+                cooldownCHECK(1, 2, 3, 4)
+        }
+//////////////////////////////////////////////////////////////////////////////   Heal Menu
+        function healingcalculation(low, high){
+            if (currentcharacterhealth <=0){
+                return;
+            }
+            const healingpoints = high !== undefined ?  Math.floor(Math.random() * (high - low + 1)) + low: low;
+            oldhealth = currentcharacterhealth;
+            currentcharacterhealth = Math.min(currentcharacterhealth + healingpoints, maxcharacterhealth);
+            shownhealing = (currentcharacterhealth - oldhealth);
+            showdamage(shownhealing, false, healingcalculation);
+            update('chef')
+        }
+
+        function manacalculation1(low, high){
+            if (currentcharacterhealth <=0){
+                return;
+            }
+            const manapoints = high !== undefined ?  Math.floor(Math.random() * (high - low + 1)) + low: low;
+            oldmana = currentmana;
+            currentmana = Math.min(currentmana + manapoints, maxmana);
+            shownmana = (currentmana - oldmana);
+            showdamage(shownmana, false, manaregenerate);
+            update('chef')
+        }
+
+        function gacha(){
+        var randomDecimal = Math.random();
+        var randomNumber = Math.floor(randomDecimal * 6) + 1;
+        setTimeout(() => {
+            alert("You have rolled: " + randomNumber)
+        }, 100);
+        setTimeout(() => {
+            if (randomNumber>=3){
+            damagecalculation(randomNumber*10)
+        }}, 300);
+    }
+        const itemFunctions = new Map();
+        itemFunctions.set('Tomato', () => {
+            healingcalculation(10)
+            playAudio('eating')
+        });
+        itemFunctions.set('Medicinal Tomato', () => {
+            playAudio('eating')
+            statincrease(10)
+        });
+
+        itemFunctions.set('Medicinal Seed', () => {
+            playAudio('eating')
+            statincrease(1)
+        });
+
+        itemFunctions.set('Magical Tomato', () => {
+            playAudio('eating')
+            statincrease(0, 10);
+        });
+
+        itemFunctions.set('Magical Seed', () => {
+            playAudio('eating')
+            statincrease(0, 1);
+        });
+        itemFunctions.set('Caesar Salad', () => {
+            playAudio('eating')
+            healingcalculation(15)
+            manacalculation1(50)
+        });
+        itemFunctions.set('Carrot Salad', () => {
+            playAudio('eating')
+            healingcalculation(15)
+        });
+        itemFunctions.set('Fruit Salad', () => {
+            playAudio('eating')
+            healingcalculation(50)
+        });
+        itemFunctions.set('Greek Salad', () => {
+            playAudio('eating')
+            healingcalculation(30)
+            manacalculation1(20)
+        });
+        itemFunctions.set('Magical Salad', () => {
+            playAudio('eating')
+            healingcalculation(maxcharacterhealth)
+            manacalculation1(maxmana)
+        });
+        itemFunctions.set('Tomato Salad', () => {
+            playAudio('eating')
+            healingcalculation(20)
+        });
+        itemFunctions.set('Carrot', () => {
+            playAudio('eating')
+            healingcalculation(1)
+        });
+        itemFunctions.set('Apple', () => {
+            playAudio('eating')
+            healingcalculation(5)
+        });
+        itemFunctions.set('Banana', () => {
+            playAudio('eating')
+            healingcalculation(5)
+        });
+        itemFunctions.set('Kiwi', () => {
+            playAudio('eating')
+            healingcalculation(5)
+        });
+        itemFunctions.set('Bread', () => {
+            playAudio('eating')
+            healingcalculation(10)
+        });
+        itemFunctions.set('Lettuce', () => {
+            playAudio('eating')
+            healingcalculation(5)
+        });
+        itemFunctions.set('Salad Dressing', () => {
+            playAudio('eating')
+            healingcalculation(10)
+        });
+        itemFunctions.set('Ultimate Salad', () => {
+            playAudio('eating')
+            setTimeout(() => {
+            playAudio('winningsound')
+            alert("You feel overwhelming power course through your body.")
+            }, 200);
+            statincrease(10000, 10000)
+        });
+        
+        
+
+        function healingoptions(){
+            if (foodstun > 0){
+                showdamage(0, false, playerturn)
+                return;
+            }
+            clear();
+            playAudio("menu-select");
+            const inventoryCounts = {};
+            inventory.forEach(item => {
+                if (inventoryCounts[item]) {
+                inventoryCounts[item]++;
+                } else {
+                inventoryCounts[item] = 1;
+                }
+            });
+
+            const menuElement = document.getElementById('specificbutton');
+            menuElement.style.overflowX = 'hidden';
+            menuElement.style.overflowY = 'scroll';
+            menuElement.style.lineHeight = '0'; // Add this line to remove the vertical space
+            
+            Object.entries(inventoryCounts).forEach(([item, count]) => {
+            let button = document.createElement('button');
+            let buttonValue = document.createTextNode(`${item} x${count}`);
+            button.appendChild(buttonValue);
+            document.getElementById('specificbutton').appendChild(button);
+            button.setAttribute('class', 'buttonstyle');
+            button.setAttribute('id', `buttoninv_${item}`);
+            button.setAttribute('title', '');
+            button.style.height = '7vh';
+            button.style.width = '7v';
+
+            const itemFunction = itemFunctions.get(item);
+        if (itemFunction) {
+        const tooltipContent = document.createElement('div');
+        tooltipContent.textContent = getItemTooltipContent(item); 
+
+        tippy(button, {
+            content: tooltipContent, // Tooltip content
+            allowHTML: true, // Enable HTML content
+            theme: 'attacks', // Custom theme for game-like styling
+            placement: 'right', // Tooltip placement
+            delay: 500,
+        });
+        }
+            button.addEventListener('click', () => {
+            removeitem(item, 1);    
+            const itemFunction = itemFunctions.get(item);
+            if (itemFunction) {
+                itemFunction();
+            }
+            save();
+            healingoptions();
+            });
+        });
+        }
+
+        function getItemTooltipContent(item) {
+  // Generate and return the tooltip content based on the item
+  // You can customize this function to generate specific tooltip content for each item
+  switch (item) {
+    case 'Tomato':
+      return 'Restore health by 10';
+    case 'Medicinal Tomato':
+      return 'Increase maximum health by 10.';
+    case 'Medicinal Seed':
+      return 'Increase maximum health by 1.';
+    case 'Magical Tomato':
+      return 'Increase maximum mana by 10.';
+    case 'Magical Seed':
+      return 'Increase maximum mana by 1.';
+      case 'Caesar Salad':
+      return 'Restore health by 15 and mana by 50.';
+      case 'Carrot Salad':
+      return 'Restore hp by 15.';
+      case 'Carrot':
+      return 'Restore hp by 1.';
+      case 'Fruit Salad':
+      return 'Restore hp by 50.';
+      case 'Greek Salad':
+      return 'Restore hp by 30 and mana by 20.';
+      case 'Magical Salad':
+      return 'Restore all of your hp and mana.';
+      case 'Tomato Salad':
+      return 'Restore hp by 20';
+      case 'Apple':
+      return 'Restores hp by 5.';
+      case 'Banana':
+      return 'Restores hp by 5.';
+      case 'Kiwi':
+      return 'Restores hp by 5.';
+      case 'Bread':
+      return 'Restores hp by 10.';
+      case 'Lettuce':
+      return 'Restores hp by 5.';
+      case 'Salad Dressing':
+      return 'Restores hp by 10.';
+      case 'Ultimate Salad':
+      return 'Gives you unlimited power.';
+      
+    default:
+      return '';
+  }
+}
+
+    function statincrease(hpincrease, manaincrease){
+        const hpIncreaseValue = hpincrease || 0;
+        const manaIncreaseValue = manaincrease || 0;
+
+        if (manaincrease !== undefined && manaincrease !== 0) {
+        maxmana += manaincrease;
+        manaregenerate(manaincrease)
+        showdamage(manaincrease, false, manaregenerate)
+        }
+    
+        if (hpincrease !== undefined && hpincrease !== 0) {
+        maxcharacterhealth += hpincrease;
+        healingcalculation(hpincrease);
+        }
+        update('chef');
+        }
+
+//////////////////////////////////////////////////////////////////////////////   spell Menu       
+        function spellcalculation(weapon){
+            if (currentcharacterhealth <=0){
+                return;
+            }
+        }
+
+        function freeze(duration){
+            if (currentcharacterhealth <=0){
+                return;
+            }
+            stun += duration;
+                const freezeElement = document.getElementById("boss1"); // select the boss element
+                freezeElement.src = 'characters/tomato_freeze.png' // set the src attribute to the URL of the new image
+            }
+            
+            function spelloptions(){
+            if (foodstun > 0){
+                showdamage(0, false, playerturn)
+                return;
+            }
+            playAudio("menu-select");
+            clear()
+            let button4 = document.createElement('button');
+            let buttonvalue4 = document.createTextNode('Freezer');
+            button4.appendChild(buttonvalue4);
+            document.getElementById('specificbutton').appendChild(button4);
+            button4.setAttribute('class','buttonstyle');
+            button4.setAttribute('id','button5');
+            button4.setAttribute('onclick', 'if (manacalculation(40)) { freeze(2); cooldownKENNETH("button5", 4); playAudio("freeze"); } else { playAudio("menu-select"); }');
+            tippy(button4, {
+                content: 'Freeze the enemy for two turns. Cost: 40 mana. Cooldown: 4 turns.', // Tooltip content
+                placement: 'right',
+                theme: "attacks",
+                delay: 500
+                });
+
+            let button5 = document.createElement('button');
+            let buttonvalue5 = document.createTextNode('Heal');
+            button5.appendChild(buttonvalue5);
+            document.getElementById('specificbutton').appendChild(button5);
+            button5.setAttribute('class','buttonstyle');
+            button5.setAttribute('id','button6');
+            button5.setAttribute('onclick', 'if (manacalculation(30)) { healingcalculation(20, 30); cooldownKENNETH("button6", 1); playAudio("healing") }else { playAudio("menu-select"); }');
+            tippy(button5, {
+                content: 'Heal yourself 20 - 30 health points. Cost 30 mana. Cooldown: 1 turn.', // Tooltip content
+                placement: 'right',
+                theme: "attacks",
+                delay: 500
+                });
+            
+            let button6 = document.createElement('button');
+            let buttonvalue6 = document.createTextNode("Chef's Dice");
+            button6.appendChild(buttonvalue6);
+            document.getElementById('specificbutton').appendChild(button6);
+            button6.setAttribute('class','buttonstyle');
+            button6.setAttribute('id','button7');
+            button6.setAttribute('onclick', 'if (manacalculation(30)) { cooldownKENNETH("button7", 1); gacha(); playAudio("diceroll") }else { playAudio("menu-select"); }');
+            tippy(button6, {
+                content: 'Roll a dice, something good may happen. Cost: 30 mana. Cooldown: 1 turn', // Tooltip content
+                placement: 'right',
+                theme: "attacks",
+                delay: 500
+                });
+            cooldownCHECK(5, 6, 7)
+        }
+
+        function retreatoptions(){
+            if (foodstun > 0){
+                showdamage(0, false, playerturn)
+                return;
+            }
+            playAudio('menu-select')
+                clear()
+                let button8 = document.createElement('button');
+                let buttonvalue8 = document.createTextNode('Run Away');
+                button8.appendChild(buttonvalue8);
+                document.getElementById('specificbutton').appendChild(button8);
+                button8.setAttribute('class','buttonstyle');
+                button8.setAttribute('id','button8');
+                button8.setAttribute('onclick', 'cooldownKENNETH("button8", 5);playAudio("menu-select"); retreat()');
+                tippy(button8, {
+                content: 'You have a 50% chance of leaving the fight if your health is more than half. If not 20% chance instead.', // Tooltip content
+                placement: 'right',
+                theme: "attacks",
+                delay: 500
+                });
+            }
+        
+    </script>
+        </body>
+</html>

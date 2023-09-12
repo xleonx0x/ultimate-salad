@@ -1,0 +1,529 @@
+<html>
+  <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/common-pixel" rel="stylesheet">
+  <style>
+    body{
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-rows: 4fr 1fr;
+      font-family: 'Public Pixel';
+      background-color: #85bcf4;
+    }
+    .menu{
+      grid-row: 1 /span 2;
+      outline: auto;
+      overflow-y: scroll;
+    }
+    .recipes{
+      grid-column: 3;
+      grid-row: 1 /span 2;
+      outline: auto;
+    }
+    .ingredients{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .centerimage, .ingredient{
+      width: auto;
+      height: 10vh;
+      text-align: center;
+    }
+    .cooking img{
+      width: 25vw;
+      margin: auto;
+    }
+    .navigationbutton{
+        border: none;
+        height: 14vh;
+        width: 20vw;
+        font-family: 'Public Pixel';
+        background-image: url("buttons/menu button.png");
+        background-color: #85bcf4;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+    .cooking{
+      display: flex; 
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .steam{
+      height: 50vh;
+      top: -15vh;
+      position: absolute;
+      z-index: 1;
+    }
+    .buttons{
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .usingingredients{
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      justify-content: center;
+    }
+    .usingingredients img{
+      width: 5vw;
+    }
+    .recipes{
+      overflow-y: scroll;
+      display: grid;
+      text-align: center;
+    }
+    .recipes div{
+      outline: auto;
+      display: grid;
+      grid-template-columns: 1fr 0.5fr;
+      grid-template-rows: 0.1fr 2fr;
+    }
+    .ingredientimageholder{
+      margin-right: 1vw;
+      grid-row: 1 /span 2;
+      grid-column: 2;
+    }
+    ul{
+      list-style-type: none;
+    }
+    .dish-indicator {
+    position: absolute;
+    top: 3vh;
+    left: 26vw;
+    background-color: #85bcf4;
+    font-size: 3vh;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .dish-indicator.animate-fade-out {
+        opacity: 0;
+        transform: translateY(-100%);
+        transition: opacity 0.3s ease-out, transform 0.5s ease-out;
+        }
+  
+  </style>
+
+
+  <body>
+    <div class="menu">
+      <div id="inventorymenu" class="ingredients">
+
+      </div>
+  </div>
+    <div class="cooking">
+      <img class="droppable" src="other/cookingpot.jpg">
+    </div>
+
+    <div class="recipes">
+      <div>
+        <p>Recipe 1: Tomato Salad</p>
+        <ul>
+          <li>3x Tomatoes</li>
+        </ul>
+        <p class="ingredientimageholder">
+          <img src="items/tomato salad.png">
+        </p>
+      </div>
+      <div>
+        <p>Recipe 2: Carrot Salad</p>
+        <ul>
+          <li>3x Carrots</li>
+        </ul>
+        <p class="ingredientimageholder">
+          <img src="items/carrot salad.png">
+        </p>
+      </div>
+      <div>
+        <p>Recipe 3: Fruit Salad</p>
+        <ul>
+          <li>1x Kiwi</li>
+          <li>1x Apple</li>
+          <li>1x Banana</li>
+        </ul>
+        <p class="ingredientimageholder">
+          <img src="items/fruit salad.png">
+        </p>
+      </div>
+      <div>
+        <p>Recipe 4: Greek Salad</p>
+        <ul>
+          <li>1x Salad Dressing</li>
+          <li>1x Tomato</li>
+          <li>1x Carrot</li>
+        </ul>
+        <p class="ingredientimageholder">
+          <img src="items/greek salad.png">
+        </p>
+      </div>
+      <div>
+        <p>Recipe 5: Caesar Salad</p>
+        <ul>
+          <li>1x Bread</li>
+          <li>1x Salad Dressing</li>
+          <li>1x Lettuce</li>
+        </ul>
+        <p class="ingredientimageholder">
+          <img src="items/caesar salad.png">
+        </p>
+      </div>
+      <div>
+        <p>Recipe 6: Magical Salad</p>
+        <ul>
+          <li>1x Magical Seed</li>
+          <li>1x Medicinal Seed</li>
+          <li>1x Tomato</li>
+          <li>1x Carrot</li>
+        </ul>
+        <p class="ingredientimageholder">
+          <img src="items/magical salad.png">
+        </p>
+      </div>
+      <div>
+        <p>Recipe 7: Medicinal Tomato</p>
+        <ul>
+          <li>2x Tomato</li>
+          <li>1x Medicinal Seed</li>
+        </ul>
+        <p class="ingredientimageholder">
+          <img src="items/medicinal tomato.png">
+        </p>
+      </div>
+      <div>
+        <p>Recipe 8: Magical Tomato</p>
+        <ul>
+          <li>2x Tomatoes</li>
+          <li>1x Medicinal Seed</li>
+        </ul>
+        <p class="ingredientimageholder">
+          <img src="items/magical tomato.png">
+        </p>
+      </div>
+      <div>
+        <p>Recipe 9: Ultimate Salad</p>
+        <ul>
+          <li>1x Caesar Salad</li>
+          <li>1x Carrot Salad</li>
+          <li>1x Fruit Salad</li>  
+          <li>1x Greek Salad</li>  
+          <li>1x Magical Salad</li>
+          <li>1x Tomato Salad</li>
+        </ul>
+        <p class="ingredientimageholder">
+          <img src="items/ultimate salad.png">
+        </p>
+      </div>
+    </div>
+
+    <div class="buttons" id="mainbutton">
+      <div class="usingingredients" id="usingingredients"></div>
+      <button class = "navigationbutton" onclick="cookfood()">
+        <p id="buttontext">Cook</p>
+      </button>
+      <button class = "navigationbutton"onclick="save()">
+        Back To Menu
+      </button>
+      
+    </div>
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+  
+  
+  <script>
+//////////////////////////////////////////////////////////////////////////////////////////////////
+    let item = document.querySelectorAll('.ingredient');
+    let currentDroppable = null
+    i = 0;
+
+    function inside(currentingredient){
+      container = document.getElementById("usingingredients")
+      container.innerHTML += '<img onclick="goback(\''+currentingredient+'\',\'item'+i+'\')" id="item'+i+'" name="'+currentingredient+'"src="items/'+currentingredient+'.png">'
+      i++
+    }
+
+    function goback(returningredient, id){
+      removeimage = document.getElementById(id)
+      removeimage.remove()
+      inventorycontainer = document.getElementById("inventorymenu")
+      inventorycontainer.innerHTML += '<div class="centerimage"><img class="ingredient" id="'+returningredient+'" name="'+currentingredient+'" draggable="false" src="items/'+returningredient+'.png"></div>'
+      updatemenu()
+      i--
+    }
+
+    function dragimages(){
+      let item = document.querySelectorAll('.ingredient');
+      item.forEach(function(items) {
+        let itemsInitialX, itemsInitialY;
+        let rect = items.getBoundingClientRect();
+        itemsInitialX = rect.left;
+        itemsInitialY = rect.top;
+
+        items.addEventListener('mousedown', function(event) {
+          let shiftX = event.clientX - items.getBoundingClientRect().left;
+          let shiftY = event.clientY - items.getBoundingClientRect().top;
+          items.addEventListener('mouseup', function() {
+              items.remove()
+              returningredient = items.getAttribute("name")
+              inventorycontainer = document.getElementById("inventorymenu")
+              inventorycontainer.innerHTML += '<div class="centerimage"><img class="ingredient" id="'+returningredient+'" name="'+returningredient+'" draggable="false" src="items/'+returningredient+'.png"></div>'
+              document.removeEventListener('mousemove', onMouseMove);
+              items.removeEventListener('mouseup', onMouseMove);
+              updatemenu()
+            });
+          function startDrag(event){
+            items.style.position = 'absolute';
+            items.style.zIndex = 1000;
+          }
+          
+          function moveAt(pageX, pageY) {
+            items.style.left = pageX - shiftX + 'px';
+            items.style.top = pageY - shiftY + 'px';
+          }
+
+          moveAt(event.pageX, event.pageY);
+
+          function onMouseMove(event) {
+            moveAt(event.pageX, event.pageY);
+            items.hidden = true;
+            let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+            items.hidden = false;
+            if (!elemBelow) return;
+            let droppableBelow = elemBelow.closest('.droppable');
+            if (currentDroppable != droppableBelow) {
+              currentDroppable = droppableBelow;
+              if (currentDroppable) {
+                document.removeEventListener('mousemove', onMouseMove);
+                items.removeEventListener('mouseup', onMouseMove);
+                items.removeEventListener('mousedown', onMouseMove)
+                items.remove()
+                currentingredient = items.getAttribute('id')
+                inside(currentingredient)
+                cleardiv = document.querySelectorAll(".centerimage")
+                cleardiv.forEach(function(div){
+                  if(div.innerHTML === ""){
+                    div.remove()
+                  }  
+                })
+              }
+            }
+          }
+
+          document.addEventListener('mousemove', onMouseMove);
+          items.addEventListener('ondragstart', function() {
+            return false;
+          });
+
+          items.addEventListener('mousedown', startDrag());
+        });
+      });
+  }
+/////////////////////////////////////////////////////////////////////////////////////////
+  inventoryString = localStorage.getItem('inventory');
+  withinventory = JSON.parse(inventoryString)
+
+  function updatemenu() {
+  withinventory.sort();
+  menu = document.getElementById("inventorymenu");
+  menu.innerHTML = "";
+
+  withinventory.forEach(function(currentitems) {
+    currentitems = currentitems.toLowerCase();
+    var imageElement = '<div class="centerimage"><img class="ingredient" id="' + currentitems + '" name="' + currentitems + '" draggable="false" src="items/' + currentitems + '.png"></div>';
+    menu.innerHTML += imageElement;
+  });
+
+  dragimages();
+  initializeTooltips();
+}
+
+function initializeTooltips() {
+  var imageElements = document.getElementsByClassName('ingredient');
+
+  Array.from(imageElements).forEach(function(imageElement) {
+    var currentitems = imageElement.id;
+    var tooltipContent = getTooltipContent(currentitems);
+
+    tippy(imageElement, {
+      content: tooltipContent,
+      placement: 'right',
+      theme: "attacks",
+      delay: 500
+    });
+  });
+}
+
+function getTooltipContent(imageName) {
+  // Customize tooltip content based on the image name
+  switch (imageName) {
+    case 'tomato':
+      return 'Tomato';
+      case 'apple':
+      return 'Apple';
+      case 'banana':
+      return 'Banana';
+      case 'kiwi':
+      return 'Kiwi';
+      case 'carrot':
+      return 'Carrot';
+      case 'salad dressing':
+      return 'Salad Dressing';
+      case 'bread':
+      return 'Bread';
+      case 'lettuce':
+      return 'Lettuce';
+      case 'magical seed':
+      return 'Magical Seed';
+      case 'medicinal seed':
+      return 'Medicinal Seed';
+      case 'magical tomato':
+      return 'Magical Tomato';
+      case 'caesar salad':
+      return 'Caesar Salad';
+      case 'carrot salad':
+      return 'Carrot Salad';
+      case 'fruit salad':
+      return 'Fruit Salad';
+      case 'greek salad':
+      return 'Greek Salad';
+      case 'tomato salad':
+      return 'Tomato Salad';
+      case 'magical salad':
+      return 'Magical Salad';
+      case 'ultimate salad':
+      return 'Ultimate Salad';
+    default:
+    return '';
+  }
+}
+
+function cookfood(){
+    const Recipes = [
+      { foodname: 'Fruit Salad', ingredientsneeded: ['apple','banana','kiwi']},
+      { foodname: 'Tomato Salad', ingredientsneeded: ['tomato','tomato','tomato']},
+      { foodname: 'Carrot Salad', ingredientsneeded: ['carrot','carrot','carrot']},
+      { foodname: 'Greek Salad', ingredientsneeded: ['carrot','salad dressing','tomato']},
+      { foodname: 'Caesar Salad', ingredientsneeded: ['bread','lettuce','salad dressing']},
+      { foodname: 'Magical Salad', ingredientsneeded: ['carrot','magical seed','medicinal seed','tomato']},
+      { foodname: 'Medicinal Tomato', ingredientsneeded: ['medicinal seed','tomato','tomato']},
+      { foodname: 'Magical Tomato', ingredientsneeded: ['magical seed','tomato','tomato']},
+      { foodname: 'Ultimate Salad', ingredientsneeded: ['caesar salad','carrot salad','fruit salad','greek salad','magical salad','tomato salad']},
+    ];
+    withinventory = [] 
+    recipeingredients = document.querySelector('#usingingredients').querySelectorAll('img')
+    usedingredients = []
+    recipeingredients.forEach(function(variable){
+      theingredient = variable.getAttribute("name").toLowerCase()
+      usedingredients.push(theingredient)
+    });
+    document.getElementById("usingingredients").innerHTML = ""
+    usedingredients.sort()
+
+    let itemsGained = 0
+
+    const bossattack = document.createElement('img');
+    bossattack.src = "Animations/steam.gif?" + new Date().getTime(); // Add a unique timestamp to the URL
+    bossattack.classList.add('steam');
+    bossattack.setAttribute('id', 'steam')
+    const cookingDiv = document.querySelector('.cooking');
+    cookingDiv.appendChild(bossattack);
+    setTimeout(() => {
+      document.getElementById("steam").remove()
+    }, 1200);
+
+    for (let i=0;i<Recipes.length; i++){
+      if(JSON.stringify(usedingredients) == JSON.stringify(Recipes[i].ingredientsneeded)){
+        const foodName = Recipes[i].foodname;
+        withinventory.push(foodName);
+        itemsGained++;
+      const dishIndicator = document.createElement('div');
+      dishIndicator.classList.add('dish-indicator');
+      dishIndicator.textContent = '+'+foodName; // Display the last obtained dish name
+      const dishdiv = document.querySelector('.cooking');
+      dishdiv.appendChild(dishIndicator);
+
+      // Remove the dish indicator after a certain duration
+      setTimeout(() => {
+              dishIndicator.classList.add('animate-fade-out');
+              setTimeout(() => {
+              dishIndicator.remove();
+              }, 1500);
+          }, 1000);
+      break;
+      }
+    }
+    if (itemsGained == 0) {
+        playAudio('broke');
+      } else if (itemsGained > 0) {
+        playAudio('winningsound'); // Play audio for item(s) gained
+      }
+    itemm = document.querySelector('#inventorymenu').querySelectorAll(".ingredient")
+    itemm.forEach(function(variable2){
+      withinventory.push(variable2.getAttribute('name').toLowerCase())
+    })
+
+    updatemenu()
+}
+
+
+
+  function capitalizeString(str) {
+  return str.replace(/\b\w/g, match => match.toUpperCase());
+}
+
+
+  dragimages()
+  updatemenu()
+  
+  const audioElements = new Map();
+        audioElements.set('menu-select', new Audio('audio/menu-select.mp3'));
+        audioElements.set('bgm', new Audio('audio/menu-music.mp3'));
+        audioElements.set('broke', new Audio('audio/broke.wav'));
+        audioElements.set('winningsound', new Audio('audio/winning sound.wav'));
+
+    function save() {
+    const capitalizedInventory = withinventory.map(item => capitalizeString(item));
+    const inventoryString = JSON.stringify(capitalizedInventory);
+    localStorage.setItem('inventory', inventoryString);
+    setTimeout(() => {
+            location.href = '../index.html';
+        }, 300);
+        playAudio('menu-select')
+  }
+    
+      function playAudio(id, delay){
+      const audio = audioElements.get(id);
+      if (delay == undefined){
+          delay = 0
+      }
+      if (id == 'bgm'){
+          audio.loop = true;
+          audio.volume = 0.2;
+          audio.play()
+          return;
+      }
+      audio.currentTime = 0;  // Reset the audio to the beginning
+      setTimeout(() => {
+          audio.play();
+      }, delay);
+      }
+
+  function toggleAudio() {
+  const audio = audioElements.get('bgm');
+  const volumeButton = document.getElementById('volume-button');
+  
+  if (audio.paused) {
+    audio.volume = 0.5;
+    audio.loop = true;
+    audio.play();
+    volumeButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+  } else {
+    audio.pause();
+    volumeButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
+  }
+}
+
+  </script>
+    </body>
+
+</html>

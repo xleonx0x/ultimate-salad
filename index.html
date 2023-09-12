@@ -1,0 +1,294 @@
+<html>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
+    <style>
+        body{
+            display: grid;
+            grid-template-columns: 50fr 50fr;
+            overflow: hidden;
+            background-color: #85bcf4;
+            margin-top: -5vh;
+        }
+        .boss1{
+            background: url("Other Code/buttons/tomatoboss_button1.png");
+            background-size: cover;
+            background-size: 500px 138px;
+            transition: 0.3s ease-in-out;
+        }
+        .boss1:hover{
+            background: url("Other Code/buttons/tomatoboss_button2.png");
+            background-size: cover;
+            background-size: 500px 138px;
+            cursor: pointer;
+        }
+        .menuoptions{
+            display: grid;
+            grid-template-rows: 1fr 2fr;
+        }
+        .buttonoptions{
+            display: grid;
+            justify-content: center;
+        }
+        .buttonoptions button{
+            border: none;
+            font-family: 'Public Pixel';
+            height: 11vh;
+            width: 20vw;
+            background-image: url("Other Code/buttons/menu button.png");
+            background-color: #85bcf4;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            cursor: pointer;
+        }
+        .buttonoptions button:active {
+            transform: translateY(4px);
+        }
+        .title{
+            text-align: center;
+        }
+        .blurb{
+            display: grid;
+            grid-template-rows: 4fr 1fr;
+        }
+        #maincontent{
+            text-align: center;
+            margin-top: 6vh;
+        }
+        #tutorialcontent{
+            text-align: center;
+            margin-top: 10vh;
+        }
+        #navigatebutton{
+            text-align: center;
+        }
+        .bossbutton{
+            width: 90%;
+            height: 90%;
+        }
+        .navigationbutton{
+            border: none;
+            font-family: 'Public Pixel';
+            height: 14vh;
+            width: 20vw;
+            background-image: url("Other Code/buttons/menu button.png");
+            background-color: #85bcf4;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            cursor: pointer;
+        }
+
+        .tomatoboss{
+            border: none;
+            height: 47vh;
+            width: 47vw;
+            font-family: 'Public Pixel';
+            background-image: url("Other Code/buttons/boss1frame1.png");
+            background-color: #85bcf4;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            cursor: pointer;
+        }
+        .tomatoboss:hover{
+            border: none;
+            height: 47vh;
+            width: 47vw;
+            font-family: 'Public Pixel';
+            background-image: url("Other Code/buttons/boss1frame2.png");
+            background-color: #85bcf4;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        .carrotboss{
+            border: none;
+            height: 47vh;
+            width: 47vw;
+            font-family: 'Public Pixel';
+            background-image: url("Other Code/buttons/boss2frame1.png");
+            background-color: #85bcf4;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            cursor: pointer;
+        }
+
+        .carrotboss:hover{
+            border: none;
+            height: 47vh;
+            width: 47vw;
+            font-family: 'Public Pixel';
+            background-image: url("Other Code/buttons/boss2frame2.png");
+            background-color: #85bcf4;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+        #volume-button {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        width: 2vw;
+        height: 4vh;
+        background-color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .fa-volume-up {
+        color: #000;
+        font-size: 20px;
+        }
+    </style>
+
+    <body>
+        <div class="menuoptions">
+            <div class="title"><img src="Other Code/background/title.png" style="width: 35vw;"></div>
+            <div class="buttonoptions">
+                <button onclick="fightmenu(); playAudio('menu-select')">Fight</button>
+                <button onclick="shopmenu(); playAudio('menu-select')">Shop</button>
+                <button onclick="cookmenu(); playAudio('menu-select')">Cook</button>
+                <button onclick="tutorialmenu(); playAudio('menu-select')">Tutorial</button>
+            </div>
+        </div>
+        <div class="blurb" id="blurb">
+            <div id="maincontent"></div>
+            <div id="navigatebutton"></div>
+        </div>
+        <div id="volume-button" onclick="toggleAudio()">
+            <i class="fas fa-volume-mute"></i>
+          </div>
+    </body>
+
+
+    <script>
+    const inventoryString = localStorage.getItem('inventory');
+    if (inventoryString) {
+    inventory = JSON.parse(inventoryString);
+    } else {
+    inventory = []; // Set to an empty array if no inventory data found
+    }
+    const currency1 = localStorage.getItem('currency');
+    if (currency1) {
+            currency = parseInt(currency1)
+        } else{
+            currency = 0;
+        }
+
+        const storedMaxCharacterHealth = localStorage.getItem('maxCharacterHealth');
+        const storedMaxMana = localStorage.getItem('maxMana');
+    if (storedMaxCharacterHealth) {
+        maxcharacterhealth = parseInt(storedMaxCharacterHealth);
+    } else{
+        maxcharacterhealth = 100;
+    }
+
+    if (storedMaxMana) {
+        maxmana = parseInt(storedMaxMana);
+    } else{
+        maxmana = 100;
+    }
+
+    function save1() {
+        const inventoryString = JSON.stringify(inventory);
+        localStorage.setItem('inventory', inventoryString);
+        const currency1 = JSON.stringify(currency);
+        localStorage.setItem('currency', currency1);
+        location.href = 'Other Code/boss1.html';
+        localStorage.setItem('maxCharacterHealth', maxcharacterhealth);
+        localStorage.setItem('maxMana', maxmana);
+    }
+
+    function leave(location1) {
+        setTimeout(() => {
+            location.href = "Other Code/" + location1 + ".html"
+        }, 300);
+        playAudio('menu-select')
+    }
+    
+    function fightmenu(){
+        container = document.getElementById("blurb")
+        container.style.gridTemplateRows = '1fr 1fr'
+        boss1 = document.getElementById("maincontent")
+        boss1.innerHTML = '<button onclick="leave(\'boss1\')" class="tomatoboss"></button>';
+
+        boss2 = document.getElementById("navigatebutton") 
+        boss2.innerHTML = '<button onclick="leave(\'boss2\')" class="carrotboss"></button>'
+        
+    }
+
+    function shopmenu(){
+        container = document.getElementById("blurb")
+        container.style.gridTemplateRows = '4fr 1fr'
+        maincontainer = document.getElementById("maincontent")
+        maincontainer.innerHTML = '<img style="height: 75vh;" src="Other Code/buttons/shop frame.png">'
+
+        changebutton = document.getElementById("navigatebutton") 
+        changebutton.innerHTML = '<button class="navigationbutton" onclick="leave(\'shop\')">Go To Shop</button>'
+    }
+
+    function cookmenu(){
+        container = document.getElementById("blurb")
+        container.style.gridTemplateRows = '4fr 1fr'
+        maincontainer = document.getElementById("maincontent")
+        maincontainer.innerHTML = '<img style="height: 75vh;" src="Other Code/buttons/cook frame.png">'
+
+        changebutton = document.getElementById("navigatebutton")
+        changebutton.innerHTML = '<button class="navigationbutton" onclick="leave(\'cooking\')">Go To Cook</button>' 
+        
+    }
+
+    function tutorialmenu(){
+        container = document.getElementById("blurb")
+        container.style.gridTemplateRows = '4fr 1fr'
+        maincontainer = document.getElementById("maincontent")
+        maincontainer.innerHTML = '<img style="height: 84vh; top:4vh" src="Other Code/buttons/creditsframe1.png">';
+
+        changebutton = document.getElementById("navigatebutton") 
+        changebutton.innerHTML = '<button class="navigationbutton" style="display: none;"></button>';
+        playAudio('menu-select')
+    }
+
+    const audioElements = new Map();
+        audioElements.set('menu-select', new Audio('Other Code/audio/menu-select.mp3'));
+        audioElements.set('bgm', new Audio('Other Code/audio/menu-music.mp3'));
+    function playAudio(id, delay){
+        const audio = audioElements.get(id);
+        if (delay == undefined){
+            delay = 0
+        }
+        if (id == 'bgm'){
+            audio.loop = true;
+            audio.volume = 0.2;
+            audio.play()
+            return;
+        }
+        audio.currentTime = 0;  // Reset the audio to the beginning
+        setTimeout(() => {
+            audio.play();
+        }, delay);
+        }
+
+        function toggleAudio() {
+        const audio = audioElements.get('bgm');
+        const volumeButton = document.getElementById('volume-button');
+        
+        if (audio.paused) {
+            audio.volume = 0.5;
+            audio.loop = true;
+            audio.play();
+            volumeButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+        } else {
+            audio.pause();
+            volumeButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        }
+        }
+
+    </script>
+    
+</html>
