@@ -1,4 +1,2 @@
-# ultimate-salad
-
-## Project designed for IPT Subject over 10 weeks.
-# Designed to educate youth about healthy eating standards through an interactive cooking and gameplay loop. 
+# ultimate-salad: project designed for IPT subject.
+Designed to educate youth about healthy eating standards through an interactive cooking and gameplay loop. 
