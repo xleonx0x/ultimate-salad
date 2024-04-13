@@ -1,4 +1,4 @@
-# ultimate-salad: multimedia project designed for IPT subject.
+![title](https://github.com/xleonx0x/ultimate-salad/assets/123799877/ebb0ab7f-c405-427a-b317-bb01388fd52a)
 Designed to educate youth about healthy eating standards through an interactive cooking and gameplay loop. 
 
 ![image](https://github.com/xleonx0x/ultimate-salad/assets/123799877/5dfb2e21-48db-4cc9-b08a-b7844136dfac)
