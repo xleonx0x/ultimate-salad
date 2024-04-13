@@ -1,3 +1,4 @@
+# Ultimate Salad: a project made for IPT multimedia assignment
 ![title](https://github.com/xleonx0x/ultimate-salad/assets/123799877/ebb0ab7f-c405-427a-b317-bb01388fd52a)
 Designed to educate youth about healthy eating standards through an interactive cooking and gameplay loop. Made from vanilla html/css and javascript.
 
